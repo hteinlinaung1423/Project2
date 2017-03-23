@@ -1,0 +1,364 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SA44Team02A_SportsDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Facility">
+          <Key>
+            <PropertyRef Name="FacilityCode" />
+            <PropertyRef Name="TimeID" />
+          </Key>
+          <Property Name="FacilityCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="TimeID" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="FacilityName" Type="varchar" MaxLength="65" />
+          <Property Name="Status" Type="varchar" MaxLength="9" />
+          <Property Name="TotalStock" Type="int" />
+          <Property Name="NumberRented" Type="int" />
+          <Property Name="RentalCost" Type="real" />
+        </EntityType>
+        <EntityType Name="IssueTrans">
+          <Key>
+            <PropertyRef Name="TransactionID" />
+          </Key>
+          <Property Name="TransactionID" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="MemberID" Type="varchar" MaxLength="50" />
+          <Property Name="DateIssue" Type="datetime" />
+          <Property Name="DateBooked" Type="datetime" />
+          <Property Name="RentalCost" Type="real" />
+          <Property Name="RentalStatus" Type="varchar" MaxLength="200" />
+          <Property Name="FacilityCode" Type="varchar" MaxLength="10" />
+          <Property Name="TimeID" Type="varchar" MaxLength="3" />
+        </EntityType>
+        <EntityType Name="MemberInformation">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MemberName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Age" Type="int" />
+          <Property Name="Address" Type="varchar" MaxLength="200" />
+          <Property Name="City" Type="varchar" MaxLength="25" />
+          <Property Name="PostalCode" Type="varchar" MaxLength="6" />
+          <Property Name="CountryCode" Type="varchar" MaxLength="3" />
+          <Property Name="ContactTitle" Type="varchar" MaxLength="3" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="9" />
+          <Property Name="EmailAddress" Type="varchar" MaxLength="50" />
+          <Property Name="BirthDate" Type="date" />
+        </EntityType>
+        <EntityType Name="StaffInformation">
+          <Key>
+            <PropertyRef Name="StaffID" />
+          </Key>
+          <Property Name="StaffID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StaffName" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="varchar" MaxLength="200" />
+          <Property Name="Age" Type="int" />
+          <Property Name="City" Type="varchar" MaxLength="25" />
+          <Property Name="PostalCode" Type="varchar" MaxLength="6" />
+          <Property Name="CountryCode" Type="varchar" MaxLength="3" />
+          <Property Name="ContactTitle" Type="varchar" MaxLength="3" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="9" />
+          <Property Name="EmailAddress" Type="varchar" MaxLength="50" />
+          <Property Name="LoginID" Type="varchar" MaxLength="25" />
+          <Property Name="Password" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="TimeSlot">
+          <Key>
+            <PropertyRef Name="TimeID" />
+          </Key>
+          <Property Name="TimeID" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="TimeSlot" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Facility__TimeID__33D4B598">
+          <End Role="TimeSlot" Type="Self.TimeSlot" Multiplicity="1" />
+          <End Role="Facility" Type="Self.Facility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeSlot">
+              <PropertyRef Name="TimeID" />
+            </Principal>
+            <Dependent Role="Facility">
+              <PropertyRef Name="TimeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IssueTran__Membe__300424B4">
+          <End Role="MemberInformation" Type="Self.MemberInformation" Multiplicity="0..1" />
+          <End Role="IssueTrans" Type="Self.IssueTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MemberInformation">
+              <PropertyRef Name="MemberID" />
+            </Principal>
+            <Dependent Role="IssueTrans">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IssueTrans__35BCFE0A">
+          <End Role="Facility" Type="Self.Facility" Multiplicity="0..1" />
+          <End Role="IssueTrans" Type="Self.IssueTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Facility">
+              <PropertyRef Name="FacilityCode" />
+              <PropertyRef Name="TimeID" />
+            </Principal>
+            <Dependent Role="IssueTrans">
+              <PropertyRef Name="FacilityCode" />
+              <PropertyRef Name="TimeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SA44Team02A_SportsDBModelStoreContainer">
+          <EntitySet Name="Facility" EntityType="Self.Facility" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IssueTrans" EntityType="Self.IssueTrans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MemberInformation" EntityType="Self.MemberInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StaffInformation" EntityType="Self.StaffInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimeSlot" EntityType="Self.TimeSlot" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Facility__TimeID__33D4B598" Association="Self.FK__Facility__TimeID__33D4B598">
+            <End Role="TimeSlot" EntitySet="TimeSlot" />
+            <End Role="Facility" EntitySet="Facility" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IssueTran__Membe__300424B4" Association="Self.FK__IssueTran__Membe__300424B4">
+            <End Role="MemberInformation" EntitySet="MemberInformation" />
+            <End Role="IssueTrans" EntitySet="IssueTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IssueTrans__35BCFE0A" Association="Self.FK__IssueTrans__35BCFE0A">
+            <End Role="Facility" EntitySet="Facility" />
+            <End Role="IssueTrans" EntitySet="IssueTrans" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SA44Team02A_SportsDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Facility">
+          <Key>
+            <PropertyRef Name="FacilityCode" />
+            <PropertyRef Name="TimeID" />
+          </Key>
+          <Property Name="FacilityCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TimeID" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FacilityName" Type="String" MaxLength="65" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="TotalStock" Type="Int32" />
+          <Property Name="NumberRented" Type="Int32" />
+          <Property Name="RentalCost" Type="Single" />
+          <NavigationProperty Name="TimeSlot" Relationship="Self.FK__Facility__TimeID__33D4B598" FromRole="Facility" ToRole="TimeSlot" />
+          <NavigationProperty Name="IssueTrans" Relationship="Self.FK__IssueTrans__35BCFE0A" FromRole="Facility" ToRole="IssueTrans" />
+        </EntityType>
+        <EntityType Name="IssueTran">
+          <Key>
+            <PropertyRef Name="TransactionID" />
+          </Key>
+          <Property Name="TransactionID" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MemberID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateIssue" Type="DateTime" Precision="3" />
+          <Property Name="DateBooked" Type="DateTime" Precision="3" />
+          <Property Name="RentalCost" Type="Single" />
+          <Property Name="RentalStatus" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FacilityCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="TimeID" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Facility" Relationship="Self.FK__IssueTrans__35BCFE0A" FromRole="IssueTrans" ToRole="Facility" />
+          <NavigationProperty Name="MemberInformation" Relationship="Self.FK__IssueTran__Membe__300424B4" FromRole="IssueTrans" ToRole="MemberInformation" />
+        </EntityType>
+        <EntityType Name="MemberInformation">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MemberName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Age" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="CountryCode" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="ContactTitle" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="IssueTrans" Relationship="Self.FK__IssueTran__Membe__300424B4" FromRole="MemberInformation" ToRole="IssueTrans" />
+        </EntityType>
+        <EntityType Name="StaffInformation">
+          <Key>
+            <PropertyRef Name="StaffID" />
+          </Key>
+          <Property Name="StaffID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StaffName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Age" Type="Int32" />
+          <Property Name="City" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="CountryCode" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="ContactTitle" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LoginID" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TimeSlot">
+          <Key>
+            <PropertyRef Name="TimeID" />
+          </Key>
+          <Property Name="TimeID" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TimeSlot1" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Facilities" Relationship="Self.FK__Facility__TimeID__33D4B598" FromRole="TimeSlot" ToRole="Facility" />
+        </EntityType>
+        <Association Name="FK__Facility__TimeID__33D4B598">
+          <End Role="TimeSlot" Type="Self.TimeSlot" Multiplicity="1" />
+          <End Role="Facility" Type="Self.Facility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeSlot">
+              <PropertyRef Name="TimeID" />
+            </Principal>
+            <Dependent Role="Facility">
+              <PropertyRef Name="TimeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IssueTrans__35BCFE0A">
+          <End Role="Facility" Type="Self.Facility" Multiplicity="0..1" />
+          <End Role="IssueTrans" Type="Self.IssueTran" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Facility">
+              <PropertyRef Name="FacilityCode" />
+              <PropertyRef Name="TimeID" />
+            </Principal>
+            <Dependent Role="IssueTrans">
+              <PropertyRef Name="FacilityCode" />
+              <PropertyRef Name="TimeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IssueTran__Membe__300424B4">
+          <End Role="MemberInformation" Type="Self.MemberInformation" Multiplicity="0..1" />
+          <End Role="IssueTrans" Type="Self.IssueTran" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MemberInformation">
+              <PropertyRef Name="MemberID" />
+            </Principal>
+            <Dependent Role="IssueTrans">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SA44Team02A_SportsDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Facilities" EntityType="Self.Facility" />
+          <EntitySet Name="IssueTrans" EntityType="Self.IssueTran" />
+          <EntitySet Name="MemberInformations" EntityType="Self.MemberInformation" />
+          <EntitySet Name="StaffInformations" EntityType="Self.StaffInformation" />
+          <EntitySet Name="TimeSlots" EntityType="Self.TimeSlot" />
+          <AssociationSet Name="FK__Facility__TimeID__33D4B598" Association="Self.FK__Facility__TimeID__33D4B598">
+            <End Role="TimeSlot" EntitySet="TimeSlots" />
+            <End Role="Facility" EntitySet="Facilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IssueTrans__35BCFE0A" Association="Self.FK__IssueTrans__35BCFE0A">
+            <End Role="Facility" EntitySet="Facilities" />
+            <End Role="IssueTrans" EntitySet="IssueTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IssueTran__Membe__300424B4" Association="Self.FK__IssueTran__Membe__300424B4">
+            <End Role="MemberInformation" EntitySet="MemberInformations" />
+            <End Role="IssueTrans" EntitySet="IssueTrans" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SA44Team02A_SportsDBModelStoreContainer" CdmEntityContainer="SA44Team02A_SportsDBEntities">
+          <EntitySetMapping Name="Facilities">
+            <EntityTypeMapping TypeName="SA44Team02A_SportsDBModel.Facility">
+              <MappingFragment StoreEntitySet="Facility">
+                <ScalarProperty Name="FacilityCode" ColumnName="FacilityCode" />
+                <ScalarProperty Name="TimeID" ColumnName="TimeID" />
+                <ScalarProperty Name="FacilityName" ColumnName="FacilityName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="TotalStock" ColumnName="TotalStock" />
+                <ScalarProperty Name="NumberRented" ColumnName="NumberRented" />
+                <ScalarProperty Name="RentalCost" ColumnName="RentalCost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IssueTrans">
+            <EntityTypeMapping TypeName="SA44Team02A_SportsDBModel.IssueTran">
+              <MappingFragment StoreEntitySet="IssueTrans">
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="DateIssue" ColumnName="DateIssue" />
+                <ScalarProperty Name="DateBooked" ColumnName="DateBooked" />
+                <ScalarProperty Name="RentalCost" ColumnName="RentalCost" />
+                <ScalarProperty Name="RentalStatus" ColumnName="RentalStatus" />
+                <ScalarProperty Name="FacilityCode" ColumnName="FacilityCode" />
+                <ScalarProperty Name="TimeID" ColumnName="TimeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MemberInformations">
+            <EntityTypeMapping TypeName="SA44Team02A_SportsDBModel.MemberInformation">
+              <MappingFragment StoreEntitySet="MemberInformation">
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="ContactTitle" ColumnName="ContactTitle" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StaffInformations">
+            <EntityTypeMapping TypeName="SA44Team02A_SportsDBModel.StaffInformation">
+              <MappingFragment StoreEntitySet="StaffInformation">
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="StaffName" ColumnName="StaffName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="ContactTitle" ColumnName="ContactTitle" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="LoginID" ColumnName="LoginID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeSlots">
+            <EntityTypeMapping TypeName="SA44Team02A_SportsDBModel.TimeSlot">
+              <MappingFragment StoreEntitySet="TimeSlot">
+                <ScalarProperty Name="TimeID" ColumnName="TimeID" />
+                <ScalarProperty Name="TimeSlot1" ColumnName="TimeSlot" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
